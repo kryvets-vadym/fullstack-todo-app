@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 // import routes
 const authRoute = require("./routes/auth");
@@ -9,9 +10,10 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  res.send("Fullstack React Course Express Server");
+  res.send("ToDo application express server");
 });
 
 app.use("/api/auth", authRoute);

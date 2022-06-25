@@ -18,19 +18,19 @@ const validateRegisterInput = (data) => {
     errors.password = "Password must be between 6 and 150 characters long!";
   }
 
-  // check the name field
-  if (isEmpty(data.name)) {
-    errors.name = "Password field can not be empty!";
-  } else if (!validator.isLength(data.name, { min: 2, max: 30 })) {
-    errors.name = "Name must be between 2 and 30 characters long!";
-  }
-
   // check confirm password field
   if (isEmpty(data.confirmPassword)) {
     errors.confirmPassword = "Confirm password field can not be empty!";
   } else if (!validator.equals(data.password, data.confirmPassword)) {
     errors.confirmPassword =
       "Password and confirm password field must be match!";
+  }
+
+  // check the name field
+  if (isEmpty(data.name)) {
+    errors.name = "Password field can not be empty!";
+  } else if (!validator.isLength(data.name, { min: 2, max: 30 })) {
+    errors.name = "Name must be between 2 and 30 characters long!";
   }
 
   return {
