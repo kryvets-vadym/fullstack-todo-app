@@ -39,6 +39,20 @@ router.post("/register", async (req, res) => {
     //saved the user to the database
     const savedUser = await newUser.save();
 
+    const payload = { userId: savedUser._id };
+
+    //jwt creating
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    //cookie creation
+    res.cookie("access-token", token, {
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
     const userToReturn = { ...savedUser._doc };
     delete userToReturn.password;
 
@@ -117,6 +131,19 @@ router.get("/current", requiresAuth, (req, res) => {
   }
 
   return res.json(req.user);
+});
+
+// @route   PUT /api/auth/logout
+// @desc    Logout user and clear a cookie
+// @access  Private
+router.put("/logout", async (req, res) => {
+  try {
+    res.clearCookie("access-token");
+    return res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err.message);
+  }
 });
 
 module.exports = router;
