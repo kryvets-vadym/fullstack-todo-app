@@ -58,6 +58,7 @@ router.post("/register", async (req, res) => {
 // @access  Public
 router.post("/login", async (req, res) => {
   try {
+    //search a user in the database
     const user = await User.findOne({
       email: new RegExp("^" + req.body.email + "$", "i"),
     });
@@ -67,7 +68,7 @@ router.post("/login", async (req, res) => {
         .status(400)
         .json({ error: "There was a problem with your login credentials" });
     }
-
+    //password comparison
     const passwordMatch = await bcrypt.compare(
       req.body.password,
       user.password
@@ -81,10 +82,12 @@ router.post("/login", async (req, res) => {
 
     const payload = { userId: user._id };
 
+    //jwt creating
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
+    //cookie creation
     res.cookie("access-token", token, {
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       httpOnly: true,
