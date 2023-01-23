@@ -19,5 +19,3 @@ You can register with your email address, and you can create ToDo items. You can
 * Sharing ToDo items with other users
 * Commenting ToDo items
 * Storing and managing history of ToDo items
-
-###### This project is licensed under the MIT Open Source License
